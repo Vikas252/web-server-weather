@@ -3,7 +3,7 @@ const express = require("express")
 const hbs = require("hbs")
 const forecast = require("./utils/forecast")
 const geocode = require("./utils/geocode")
-const request = require("postman-request")
+//const request = require("postman-request")
 
 console.log(__dirname)
 console.log(path.join(__dirname, "../public"))
@@ -31,9 +31,16 @@ app.use(
   express.static(path.join(__dirname, "../node_modules/jquery/dist"))
 )
 
-app.get("/", (req, res) => {
+app.get("", (req, res) => {
   res.render("index", {
     title: "Weather App",
+    name: "Vikas MD",
+  })
+})
+
+app.get("/about", (req, res) => {
+  res.render("about", {
+    title: "About Me",
     name: "Vikas MD",
   })
 })
@@ -43,13 +50,6 @@ app.get("/help", (req, res) => {
     title: "Help",
     name: "Vikas MD",
     helpText: "This is some help text",
-  })
-})
-
-app.get("/about", (req, res) => {
-  res.render("about", {
-    title: "About Me",
-    name: "Vikas MD",
   })
 })
 
@@ -92,12 +92,11 @@ app.get("/about", (req, res) => {
 // })
 
 app.get("/weather", (req, res) => {
-  // if (!req.query.address) {
-  //   return res.send({
-  //     error: "You must provide an address!",
-  //   })
-  // }
-
+  if (!req.query.address) {
+    return res.send({
+      error: "You must provide an address!",
+    })
+  }
   geocode(
     req.query.address,
     (error, { latitude, longitude, location } = {}) => {
@@ -118,7 +117,7 @@ app.get("/weather", (req, res) => {
       })
     }
   )
-  module.exports = req.query.address
+  //module.exports = req.query.address
 })
 
 app.get("/help/*", (req, res) => {
